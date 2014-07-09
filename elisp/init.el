@@ -7,11 +7,13 @@
   (add-to-list 'load-path "~/elisp")
 
   ;;; color theme
-  ;;; (require 'color-theme)
-  ;;; (eval-after-load "color-theme"
-  ;;; '(progn
-  ;;; (color-theme-initialize)
-  ;;; (color-theme-tty-dark)))
+  (require 'color-theme)
+  (eval-after-load "color-theme"
+	'(progn
+	   (color-theme-initialize)
+	   (color-theme-tty-dark)))
+
+  ;; editor
   (setq line-number-mode 1)
   (setq column-number-mode 1)
   (setq-default transient-mark-mode t)  ;; enable visual feedback on selections
@@ -26,6 +28,14 @@
   (setq default-major-mode        'text-mode)
   (setq default-tab-width         4)
   (global-auto-revert-mode)
+
+  ;; matlab/octave
+  (autoload 'matlab-mode "matlab" "Enter Matlab mode." t)
+  (setq auto-mode-alist (cons '("\\.m\\'" . matlab-mode) auto-mode-alist))
+  (setq matlab-indent-function t)
+  (setq matlab-verify-on-save-flag nil)
+  (defun my-matlab-mode-hook () (setq fill-column 76))
+  (add-hook 'matlab-mode-hook 'my-matlab-mode-hook)
 )
 
 (defun emacs-common ()
@@ -81,6 +91,7 @@
   (global-set-key (kbd "M-0") 'next-buffer)
   (global-set-key (kbd "M-7") 'previous-multiframe-window)
   (global-set-key (kbd "M-8") 'next-multiframe-window)
+  (global-set-key (kbd "M-m") 'magit-status)
   (global-set-key [f3] 'goto-line)
   (global-set-key [f4] 'query-replace)
   (global-set-key [f12] 'compile)
