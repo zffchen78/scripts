@@ -30,12 +30,15 @@
   (global-auto-revert-mode)
 
   ;; matlab/octave
-  (autoload 'matlab-mode "matlab" "Enter Matlab mode." t)
-  (setq auto-mode-alist (cons '("\\.m\\'" . matlab-mode) auto-mode-alist))
-  (setq matlab-indent-function t)
-  (setq matlab-verify-on-save-flag nil)
-  (defun my-matlab-mode-hook () (setq fill-column 76))
-  (add-hook 'matlab-mode-hook 'my-matlab-mode-hook)
+  (autoload 'octave-mode "octave-mod" nil t)
+  (setq auto-mode-alist
+		(cons '("\\.m$" . octave-mode) auto-mode-alist))
+  (add-hook 'octave-mode-hook
+			(lambda ()
+			  (abbrev-mode 1)
+			  (auto-fill-mode 1)
+			  (if (eq window-system 'x)
+				  (font-lock-mode 1))))
 )
 
 (defun emacs-common ()
@@ -59,6 +62,7 @@
   ;; (setq kept-old-versions               2)
   ;; (setq kept-new-versions               8)
   ;; (setq delete-old-versions             t)
+  (setq make-backup-files nil)
 
   ;; GDB
   (setq gud-gdb-command-name "debug --annotate=3")
@@ -143,4 +147,4 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+)
